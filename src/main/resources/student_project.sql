@@ -12,6 +12,7 @@ CREATE TABLE jc_street
     street_name varchar(300),
     PRIMARY KEY (street_code)
 );
+
 CREATE TABLE jc_university
 (
     university_id integer not null,
@@ -48,7 +49,7 @@ CREATE TABLE jc_register_office
 CREATE TABLE jc_student_order
 (
     student_order_id SERIAL,
-    student_order_status integer not null,
+    student_order_status int not null,
     student_order_date timestamp not null,
     h_sur_name varchar(100) not null,
     h_given_name varchar(100) not null,
@@ -110,10 +111,11 @@ CREATE TABLE jc_student_child
     c_extension varchar(10),
     c_apartment varchar(10),
     PRIMARY KEY (student_child_id),
+    FOREIGN KEY (student_order_id) REFERENCES jc_student_order(student_order_id) ON DELETE RESTRICT,
     FOREIGN KEY (c_street_code) REFERENCES jc_street(street_code) ON DELETE RESTRICT,
     FOREIGN KEY (c_register_office_id) REFERENCES jc_register_office(r_office_id) ON DELETE RESTRICT
 );
 
 CREATE INDEX idx_student_order_status ON jc_student_order(student_order_status);
 
-CREATE INDEX idx_student_order_odred_id ON jc_student_child(student_order_id);
+CREATE INDEX idx_student_order_id ON jc_student_child(student_order_id);

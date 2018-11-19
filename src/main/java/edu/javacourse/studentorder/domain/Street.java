@@ -28,4 +28,12 @@ public class Street
     public void setStreetName(String streetName) {
         this.streetName = streetName;
     }
+
+
+    public String print() {
+        return "Street{" +
+                "streetCode=" + streetCode +
+                ", streetName='" + streetName + '\'' +
+                '}';
+    }
 }
