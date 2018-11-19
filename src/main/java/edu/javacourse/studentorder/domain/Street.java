@@ -36,4 +36,12 @@ public class Street
                 ", streetName='" + streetName + '\'' +
                 '}';
     }
+
+    @Override
+    public String toString() {
+        return "Street{" +
+                "streetCode=" + streetCode +
+                ", streetName='" + streetName + '\'' +
+                '}';
+    }
 }

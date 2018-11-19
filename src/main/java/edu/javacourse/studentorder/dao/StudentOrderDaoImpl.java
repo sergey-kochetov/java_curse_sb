@@ -3,6 +3,8 @@ package edu.javacourse.studentorder.dao;
 import edu.javacourse.studentorder.config.Config;
 import edu.javacourse.studentorder.domain.*;
 import edu.javacourse.studentorder.exception.DaoException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -15,6 +17,8 @@ import java.util.stream.Collectors;
 
 public class StudentOrderDaoImpl implements StudentOrderDao
 {
+    private static final Logger logger = LoggerFactory.getLogger(StudentOrderDaoImpl.class);
+
     private static final String INSERT_ORDER =
             "INSERT INTO jc_student_order(" +
                     " student_order_status, student_order_date, h_sur_name, " +
@@ -44,10 +48,12 @@ public class StudentOrderDaoImpl implements StudentOrderDao
                     " ?, ?, ?, ?, " +
                     " ?, ?, ?, ?, " +
                     " ?, ?)";
+
     private static final String SELECT_ORDERS_OLD =
             "select so.*, ro.r_office_area_id, ro.r_office_name from jc_student_order so " +
                     "inner join jc_register_office ro ON ro.r_office_id = so.register_office_id " +
                     "where student_order_status = 0 order by student_order_date";
+
     private static final String SELECT_ORDERS =
             "select so.*, ro.r_office_area_id, ro.r_office_name, " +
                     "po_h.p_office_area_id as h_p_office_area_id, " +
@@ -59,11 +65,13 @@ public class StudentOrderDaoImpl implements StudentOrderDao
                     "inner join jc_passport_office po_h ON po_h.p_office_id = so.h_passport_office_id " +
                     "inner join jc_passport_office po_w ON po_w.p_office_id = so.w_passport_office_id " +
                     "where student_order_status = ? order by student_order_date LIMIT ?";
+
     private static final String SELECT_CHILD =
             "SELECT soc.*, ro.r_office_area_id, ro.r_office_name " +
                     "FROM jc_student_child soc " +
                     "INNER JOIN jc_register_office ro ON ro.r_office_id = soc.c_register_office_id " +
                     "WHERE soc.student_order_id IN ";
+
     private static final String SELECT_ORDERS_FULL =
             "SELECT so.*, ro.r_office_area_id, ro.r_office_name, " +
                     "po_h.p_office_area_id AS h_p_office_area_id, " +
@@ -79,7 +87,7 @@ public class StudentOrderDaoImpl implements StudentOrderDao
                     "INNER JOIN jc_register_office ro_c ON ro_c.r_office_id = soc.c_register_office_id " +
                     "WHERE student_order_status = ? ORDER BY so.student_order_id LIMIT ?";
 
-    // TODO refactoring - make one method
+
     private Connection getConnection() throws SQLException {
         return ConnectionBuilder.getConnection();
     }
@@ -87,6 +95,8 @@ public class StudentOrderDaoImpl implements StudentOrderDao
     @Override
     public Long saveStudentOrder(StudentOrder so) throws DaoException {
         Long result = -1L;
+
+        logger.debug("SO:{}", so);
 
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(INSERT_ORDER, new String[]{"student_order_id"})) {
@@ -123,6 +133,7 @@ public class StudentOrderDaoImpl implements StudentOrderDao
             }
 
         } catch (SQLException ex) {
+            logger.error(ex.getMessage(), ex);
             throw new DaoException(ex);
         }
 
@@ -216,6 +227,7 @@ public class StudentOrderDaoImpl implements StudentOrderDao
 
             rs.close();
         } catch(SQLException ex) {
+            logger.error(ex.getMessage(), ex);
             throw new DaoException(ex);
         }
 
@@ -240,6 +252,7 @@ public class StudentOrderDaoImpl implements StudentOrderDao
 
             rs.close();
         } catch(SQLException ex) {
+            logger.error(ex.getMessage(), ex);
             throw new DaoException(ex);
         }
         return result;

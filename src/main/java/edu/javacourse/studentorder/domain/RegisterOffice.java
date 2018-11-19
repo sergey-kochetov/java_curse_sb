@@ -47,4 +47,13 @@ public class RegisterOffice
                 ", officeName='" + officeName + '\'' +
                 '}';
     }
+
+    @Override
+    public String toString() {
+        return "RegisterOffice{" +
+                "officeId=" + officeId +
+                ", officeAreaId='" + officeAreaId + '\'' +
+                ", officeName='" + officeName + '\'' +
+                '}';
+    }
 }

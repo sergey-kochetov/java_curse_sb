@@ -8,48 +8,21 @@ import edu.javacourse.studentorder.exception.DaoException;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.sql.Connection;
-import java.sql.Statement;
-import java.util.Arrays;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
 public class DictionaryDaoImplTest {
 
+    private static final Logger logger = LoggerFactory.getLogger(DictionaryDaoImplTest.class);
+
     @BeforeClass
     public static void startUp() throws Exception {
-        // given
-        URL url1 = DictionaryDaoImplTest.class.getClassLoader()
-                .getResource("student_project.sql");
-        URL url2 = DictionaryDaoImplTest.class.getClassLoader()
-                .getResource("student_data.sql");
-
-
-        List<String> lines1 = Files.readAllLines(Paths.get(url1.toURI()));
-        String sql1 = lines1.stream().collect(Collectors.joining());
-
-        List<String> lines2 = Files.readAllLines(Paths.get(url2.toURI()));
-        String sql2 = lines2.stream().collect(Collectors.joining());
-
-
-        try (Connection con = ConnectionBuilder.getConnection();
-             Statement stmp = con.createStatement();
-        ) {
-            stmp.executeUpdate(sql1);
-            stmp.executeUpdate(sql2);
-        }
-
-    }
-
-    @Before
-    public void startBefore() throws DaoException {
-
+        DBinit.startUp();
     }
 
     @Test

@@ -26,4 +26,12 @@ public class University {
     public void setUniversityName(String universityName) {
         this.universityName = universityName;
     }
+
+    @Override
+    public String toString() {
+        return "University{" +
+                "universityId=" + universityId +
+                ", universityName='" + universityName + '\'' +
+                '}';
+    }
 }

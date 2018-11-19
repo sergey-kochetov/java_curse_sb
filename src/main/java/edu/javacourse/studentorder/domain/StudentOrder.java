@@ -97,4 +97,20 @@ public class StudentOrder
     public void setMarriageDate(LocalDate marriageDate) {
         this.marriageDate = marriageDate;
     }
+
+    @Override
+    public String toString() {
+        return "StudentOrder{" +
+                "studentOrderId=" + studentOrderId +
+                ", studentOrderStatus=" + studentOrderStatus +
+                ", studentOrderDate=" + studentOrderDate +
+                ", husband=" + husband +
+                ", wife=" + wife +
+                ", children=" + children +
+                ", marriageCertificateId='" + marriageCertificateId + '\'' +
+                ", marriageOffice=" + marriageOffice +
+                ", marriageDate=" + marriageDate +
+                '}';
+    }
+
 }
